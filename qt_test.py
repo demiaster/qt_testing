@@ -1,23 +1,18 @@
 import sys
-from Qt import QtGui, QtWidgets
+from Qt import load_ui, QtGui, QtWidgets
 
 
-class MyDialog(QtWidgets.QDialog):
+class MyWindow(QtWidgets.QMainWindow):
 	def __init__(self, api):
-		super(MyDialog, self).__init__()
+		super(MyWindow, self).__init__()
+
+		self.form = load_ui('form.ui')
+		self.setCentralWidget(self.form)
 
 		self.api = api
 
-		self.lv = QtWidgets.QListView()
-		self.button = QtWidgets.QPushButton("Add Item")
-
-		lyt = QtWidgets.QVBoxLayout()
-		lyt.addWidget(self.lv)
-		lyt.addWidget(self.button)
-		self.setLayout(lyt)
-
-		self.lv.setModel(self.api.model)
-		self.button.clicked.connect(self.on_button_pressed)
+		self.form.lv.setModel(self.api.model)
+		self.form.button.clicked.connect(self.on_button_pressed)
 
 	def on_button_pressed(self):
 		self.api.add_item()
@@ -45,6 +40,6 @@ if __name__ == "__main__":
 	# Something happens before UI
 	api.add_item()
 
-	md = MyDialog(api)
+	md = MyWindow(api)
 	md.show()
 	sys.exit(qApp.exec_())
