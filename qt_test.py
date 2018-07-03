@@ -19,9 +19,14 @@ class MyDialog(QtWidgets.QDialog):
 		self.lv.setModel(self.model)
 		self.button.clicked.connect(self.on_button_pressed)
 
+		self.count = 0
+
 	def on_button_pressed(self):
+		self.count += 1
 		self.model.appendRow(
-			QtGui.QStandardItem('Blah')
+			QtGui.QStandardItem(
+				'Item {0}'.format(self.count)
+			)
 		)
 
 if __name__ == "__main__":
