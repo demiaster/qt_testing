@@ -18,22 +18,22 @@ class MyWindow(QtWidgets.QMainWindow):
 		self.form.comboBox.setModel(self.api.model)
 		self.form.button.clicked.connect(self.on_button_pressed)
 
-		self.form.lineEdit.textChanged.connect(self.on_line_edit_changed)
+		self.form.comboBox.currentIndexChanged.connect(self.on_line_edit_changed)
 
 	def on_button_pressed(self):
 		self.api.add_item()
 
 	def on_line_edit_changed(self):
-		filter_text = self.form.lineEdit.text()
+		filter_text = self.form.comboBox.currentText()
 		self.model_filter.setFilterFixedString(filter_text)
 
 
 class MyApi(object):
-	def __init__(self):
+	def __init__(self, mod):
 		self.model = QtGui.QStandardItemModel()
 		self.count = 0
-
-		for i in dir(QtGui):
+		self.mod = mod
+		for i in dir(mod):
 			self.model.appendRow(
 				QtGui.QStandardItem(i)
 			)
@@ -50,7 +50,7 @@ class MyApi(object):
 if __name__ == "__main__":
 
 	qApp = QtWidgets.QApplication(sys.argv)
-	api = MyApi()
+	api = MyApi("Qt")
 
 	# Something happens before UI
 	api.add_item()
